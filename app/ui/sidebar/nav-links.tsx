@@ -8,16 +8,50 @@ import {
 import Image from "next/image";
 import logo from "@/public/logo.jpeg";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
 import { NavigationLink } from "@/app/lib/definitions";
 
 export default function NavLinks({ links }: { links: NavigationLink[] }) {
   const pathname = usePathname();
+  const [currentLink, setCurrentLink] = useState(
+    links.indexOf(
+      links.find((link) => link.href === pathname) as NavigationLink
+    )
+  );
+  const router = useRouter();
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to control the menu open/close
   const sidebarRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (document.activeElement?.tagName === "INPUT") {
+        // If an input is focused, don't handle the key press
+        return;
+      }
+
+      if (
+        event.key === "n" ||
+        (event.key === "N" && currentLink !== links.length)
+      ) {
+        router.push(links[currentLink + 1].href);
+        setCurrentLink((currentLink + 1) % links.length);
+      } else if (event.key === "b" || event.key === "B") {
+        router.push(
+          links[(currentLink - 1 + links.length) % links.length].href
+        );
+        setCurrentLink((currentLink - 1 + links.length) % links.length);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [links, currentLink, router, pathname]);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (

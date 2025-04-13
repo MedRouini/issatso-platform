@@ -24,6 +24,7 @@ const ChatbotComponent = () => {
   // });
 
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -31,9 +32,61 @@ const ChatbotComponent = () => {
         messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "c" || event.key === "C") {
+        setShowChat((prevShowChat) => !prevShowChat);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setShowChat(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showChat]); // Empty dependency array means this effect runs once on mount and cleanup on unmount
+
+  useEffect(() => {
+    if (showChat && inputRef.current) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100); // delay of 100ms
+    }
+  }, [showChat]);
   const handleChange = (event: any) => {
     setUserInput(event.target.value);
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "c" || event.key === "C") {
+        setShowChat(true);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup function to remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []); //
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -109,7 +162,7 @@ const ChatbotComponent = () => {
       >
         {/* Heading */}
         <div className="flex flex-col space-y-1.5 pb-6">
-          <h2 className="font-semibold text-lg tracking-tight">Sami</h2>
+          <h2 className="font-semibold text-lg tracking-tight">Chatbot</h2>
           <p className="text-sm text-[#6b7280] leading-3">
             I'm here to assist you with ISSAT Sousse University inquiries!
           </p>
@@ -178,6 +231,7 @@ const ChatbotComponent = () => {
             onSubmit={handleSubmit}
           >
             <input
+              ref={inputRef}
               className="flex h-10 w-full rounded-md border border-[#e5e7eb] px-3 py-2 text-sm placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#9ca3af] disabled:cursor-not-allowed disabled:opacity-50 text-[#030712] focus-visible:ring-offset-2"
               placeholder="Type your message"
               value={userInput}

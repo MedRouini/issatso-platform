@@ -9,6 +9,12 @@ import {
   BuildingLibraryIcon,
   BanknotesIcon,
   PencilIcon,
+  QuestionMarkCircleIcon,
+  DocumentIcon,
+  ClockIcon,
+  CalendarDaysIcon,
+  BookOpenIcon,
+  AcademicCapIcon,
 } from "@heroicons/react/24/outline";
 import NavLinks from "./nav-links";
 
@@ -16,33 +22,38 @@ const links: NavigationLink[] = [
   { name: "Home", href: "/dashboard", icon: HomeIcon },
   {
     name: "Courses",
-    icon: ArchiveBoxIcon,
+    icon: DocumentIcon,
     href: "/dashboard/courses",
   },
   {
     name: "Group",
-    icon: PencilIcon,
+    icon: UserGroupIcon,
     href: "/dashboard/group",
   },
   {
     name: "Timetable",
     href: "/dashboard/timetable",
-    icon: UserGroupIcon,
+    icon: ClockIcon,
   },
   {
     name: "Exams Schedule",
     href: "/dashboard/schedule",
-    icon: WalletIcon,
+    icon: CalendarDaysIcon,
   },
   {
     name: "Results",
     href: "/dashboard/results",
-    icon: BuildingLibraryIcon,
+    icon: AcademicCapIcon,
   },
   {
     name: "E-Library",
     href: "/dashboard/library",
-    icon: BuildingLibraryIcon,
+    icon: BookOpenIcon,
+  },
+  {
+    name: "KDB Helper",
+    href: "/dashboard/kdb-helper",
+    icon: QuestionMarkCircleIcon,
   },
 ];
 

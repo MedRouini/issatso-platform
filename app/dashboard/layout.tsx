@@ -12,9 +12,7 @@ export default function DashboardLayout({
         <SideNav />
       </div>
       <ChatbotComponent />
-      <div className="h-screen w-full bg-gray-50">
-        {children}
-      </div>
+      <div className="w-full min-h-screen bg-gray-50">{children}</div>
     </div>
   );
 }
